@@ -2,6 +2,7 @@ package com.polaristech.bookassignment.controller;
 
 import com.polaristech.bookassignment.api.IBook;
 import com.polaristech.bookassignment.common.GenericResponse;
+import com.polaristech.bookassignment.common.dto.BookDTO;
 import com.polaristech.bookassignment.entity.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,12 +26,12 @@ public class BookController {
     private IBook iBook;
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, value = "/")
-    public ResponseEntity<GenericResponse<?>> approveRequest(@NotNull @RequestBody Book book) {
+    public ResponseEntity<GenericResponse<?>> createBook(@NotNull @RequestBody BookDTO bookDTO) {
         return ResponseEntity.ok().body(new
                 GenericResponse<>(
                 "00",
                 "Request processed successfully",
-                iBook.createBook(book),
+                iBook.createBook(bookDTO),
                 new Date())
         );
     }
@@ -47,7 +48,7 @@ public class BookController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, value = "/")
-    public ResponseEntity<GenericResponse<?>> deleteBook(@NotNull @RequestBody Book book) {
+    public ResponseEntity<GenericResponse<?>> updateBook(@NotNull @RequestBody Book book) {
         return ResponseEntity.ok().body(new
                 GenericResponse<>(
                 "00",

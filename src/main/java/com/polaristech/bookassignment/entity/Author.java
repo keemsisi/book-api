@@ -3,18 +3,21 @@ package com.polaristech.bookassignment.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 import java.util.UUID;
 
 @Entity
+@Table(name = "author")
 @Data
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
 public class Author {
     @Id
