@@ -41,6 +41,8 @@ public class Book {
     private String gender;
     @Column
     private UUID createdBy;
+    @Column
+    private UUID modifiedBy;
     @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date dateCreated;

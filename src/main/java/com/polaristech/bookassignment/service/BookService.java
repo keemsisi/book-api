@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -54,6 +55,7 @@ public class BookService implements IBook {
                 .isbn(bookDTO.getIsbn())
                 .title(bookDTO.getTitle())
                 .createdBy(randomCreatedBy)
+                .dateCreated(new Date())
                 .build();
         return bookRepository.save(book).getId();
     }
@@ -65,6 +67,8 @@ public class BookService implements IBook {
         updatedBook.setGender(book.getGender());
         updatedBook.setTitle(book.getTitle());
         updatedBook.setIsbn(book.getIsbn());
+        updatedBook.setDateModified(new Date());
+        updatedBook.setModifiedBy(UUID.randomUUID());
         updatedBook.setGender(book.getGender());
        return bookRepository.save(updatedBook);
     }
