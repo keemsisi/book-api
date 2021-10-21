@@ -10,9 +10,9 @@ import java.util.UUID;
 public interface IBook {
     UUID createBook(@NotNull BookDTO book);
 
-    boolean editBook(@NotNull Book book);
+    boolean editBook(@NotNull BookDTO bookDTO);
 
-    boolean deleteBook(@NotNull UUID uuid);
+    void deleteBook(@NotNull UUID uuid);
 
     Book getBook(@NotNull UUID uuid);
 }

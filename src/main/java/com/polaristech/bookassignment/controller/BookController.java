@@ -7,10 +7,7 @@ import com.polaristech.bookassignment.entity.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -19,7 +16,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "/book")
+@RequestMapping(value = "/api/book")
 public class BookController {
 
     @Autowired
@@ -36,8 +33,8 @@ public class BookController {
         );
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, value = "/{bookId}")
-    public ResponseEntity<GenericResponse<?>> getBook(@NotNull @PathParam(value = "bookId") UUID bookId) {
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, value = "/search/{id}")
+    public ResponseEntity<GenericResponse<?>> getBook(@NotNull @PathVariable(value = "id") UUID bookId) {
         return ResponseEntity.ok().body(new
                 GenericResponse<>(
                 "00",
@@ -47,19 +44,19 @@ public class BookController {
         );
     }
 
-    @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, value = "/")
-    public ResponseEntity<GenericResponse<?>> updateBook(@NotNull @RequestBody Book book) {
+    @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, value = "")
+    public ResponseEntity<GenericResponse<?>> updateBook(@NotNull @RequestBody BookDTO bookDTO) {
         return ResponseEntity.ok().body(new
                 GenericResponse<>(
                 "00",
                 "Request processed successfully",
-                iBook.editBook(book),
+                iBook.editBook(bookDTO),
                 new Date())
         );
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE, value = "/{bookId}")
-    public ResponseEntity<GenericResponse<?>> deleteBook(@NotNull @NotEmpty @PathParam(value = "bookId") UUID bookId) {
+    @RequestMapping(method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE, value = "/remove/{id}")
+    public ResponseEntity<GenericResponse<?>> deleteBook(@NotNull @NotEmpty @PathVariable(value = "id") UUID bookId) {
         iBook.deleteBook(bookId);
         return ResponseEntity.ok().body(new
                 GenericResponse<>(

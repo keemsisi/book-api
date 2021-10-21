@@ -36,19 +36,20 @@ public class BookService implements IBook {
     @Override
     public UUID createBook(@NotNull BookDTO bookDTO) {
         UUID randomCreatedBy = UUID.randomUUID();
-        Optional<Author> author = iAuthor.getAuthor(bookDTO.getAuthorId());
+        Optional<Author> author = Optional.ofNullable(iAuthor.getAuthor(bookDTO.getAuthorId()));
         if (author.isEmpty())
             throw new ResourceNotFoundException("author not found");
-        Optional<Publisher> publisher = iPublisher.getPublisher(bookDTO.getPublisherId());
+        Optional<Publisher> publisher = Optional.ofNullable(iPublisher.getPublisher(bookDTO.getPublisherId()));
         if (publisher.isEmpty())
             throw new ResourceNotFoundException("publisher not found");
-        Optional<Country> country = iCountry.getCountry(bookDTO.getCountryId());
-        if (country.isEmpty())
-            throw new ResourceNotFoundException("country not found");
+//        Optional<Country> country = iCountry.getCountry(bookDTO.getCountryId());
+//        if (country.isEmpty())
+//            throw new ResourceNotFoundException("country not found");
         Book book = Book.builder()
+                .id(UUID.randomUUID())
                 .author(List.of(author.get()))
                 .publisher(publisher.get())
-                .countryId(bookDTO.getCountryId())
+                .countryId(UUID.randomUUID()) // random country
                 .gender(bookDTO.getGender())
                 .isbn(bookDTO.getIsbn())
                 .title(bookDTO.getTitle())
@@ -60,7 +61,7 @@ public class BookService implements IBook {
 
 
     @Override
-    public boolean editBook(@NotNull Book book) {
+    public boolean editBook(@NotNull BookDTO book) {
         Book updatedBook = getBook(book.getId());
         updatedBook.setGender(book.getGender());
         updatedBook.setTitle(book.getTitle());
@@ -71,9 +72,8 @@ public class BookService implements IBook {
     }
 
     @Override
-    public boolean deleteBook(UUID uuid) {
+    public void deleteBook(UUID uuid) {
         bookRepository.deleteById(getBook(uuid).getId());
-        return true;
     }
 
     @Override
