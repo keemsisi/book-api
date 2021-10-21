@@ -7,12 +7,12 @@ import com.polaristech.bookassignment.api.IPublisher;
 import com.polaristech.bookassignment.common.dto.BookDTO;
 import com.polaristech.bookassignment.entity.Author;
 import com.polaristech.bookassignment.entity.Book;
-import com.polaristech.bookassignment.entity.Country;
 import com.polaristech.bookassignment.entity.Publisher;
 import com.polaristech.bookassignment.exceptions.ResourceNotFoundException;
 import com.polaristech.bookassignment.repository.BookRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
@@ -55,20 +55,18 @@ public class BookService implements IBook {
                 .title(bookDTO.getTitle())
                 .createdBy(randomCreatedBy)
                 .build();
-        bookRepository.save(book);
-        return book.getId();
+        return bookRepository.save(book).getId();
     }
 
 
     @Override
-    public boolean editBook(@NotNull BookDTO book) {
+    public Book editBook(@NotNull BookDTO book) {
         Book updatedBook = getBook(book.getId());
         updatedBook.setGender(book.getGender());
         updatedBook.setTitle(book.getTitle());
         updatedBook.setIsbn(book.getIsbn());
         updatedBook.setGender(book.getGender());
-        bookRepository.save(updatedBook);
-        return true;
+       return bookRepository.save(updatedBook);
     }
 
     @Override
@@ -78,8 +76,15 @@ public class BookService implements IBook {
 
     @Override
     public Book getBook(@NotNull UUID uuid) {
-        Optional<Book> book = bookRepository.findById(uuid);
-        if (book.isEmpty()) throw new ResourceNotFoundException(String.format("book with id %s not found", uuid));
-        return bookRepository.getById(uuid);
+        Optional<Book> optionalBook = bookRepository.findById(uuid);
+        if (optionalBook.isEmpty()) throw new ResourceNotFoundException(String.format("book with id %s not found", uuid));
+        return optionalBook.get();
     }
+
+    @Override
+    public List<Book> getAll() {
+        System.out.println(bookRepository.findAll(Sort.by(Sort.Direction.DESC, "dateCreated")).size());
+        return bookRepository.findAll();
+    }
+
 }

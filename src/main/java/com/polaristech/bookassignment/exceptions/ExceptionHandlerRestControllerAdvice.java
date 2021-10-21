@@ -16,7 +16,6 @@ public class ExceptionHandlerRestControllerAdvice extends ResponseEntityExceptio
     @ExceptionHandler(value = {IllegalArgumentException.class, IllegalStateException.class, JpaSystemException.class})
     protected ResponseEntity<Object> badRequests(RuntimeException ex, WebRequest request) {
         ex.printStackTrace();
-        String bodyOfResponse = ex.getMessage();
         return ResponseEntity.badRequest().body(Map.of(
                 "message", "exception occurred",
                 "status", 400,
@@ -26,7 +25,6 @@ public class ExceptionHandlerRestControllerAdvice extends ResponseEntityExceptio
 
     @ExceptionHandler(value = {ResourceNotFoundException.class})
     protected ResponseEntity<Object> resourceNotFound(RuntimeException ex, WebRequest request) {
-        String bodyOfResponse = ex.getMessage();
         return ResponseEntity.badRequest().body(Map.of(
                 "message", ex.getMessage(),
                 "status", 400,
@@ -37,7 +35,6 @@ public class ExceptionHandlerRestControllerAdvice extends ResponseEntityExceptio
     @ExceptionHandler(value = {SQLGrammarException.class, Exception.class})
     protected ResponseEntity<Object> serverError(RuntimeException ex, WebRequest request) {
         ex.printStackTrace();
-        String bodyOfResponse = ex.getMessage();
         return ResponseEntity.status(500).body(Map.of(
                 "message", "internal server error occurred",
                 "status", 500,

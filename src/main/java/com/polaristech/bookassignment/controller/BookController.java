@@ -3,7 +3,6 @@ package com.polaristech.bookassignment.controller;
 import com.polaristech.bookassignment.api.IBook;
 import com.polaristech.bookassignment.common.GenericResponse;
 import com.polaristech.bookassignment.common.dto.BookDTO;
-import com.polaristech.bookassignment.entity.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.websocket.server.PathParam;
 import java.util.Date;
 import java.util.UUID;
 
@@ -40,6 +38,17 @@ public class BookController {
                 "00",
                 "Request processed successfully",
                 iBook.getBook(bookId),
+                new Date())
+        );
+    }
+
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE, value = "/all")
+    public ResponseEntity<GenericResponse<?>> getBooks() {
+        return ResponseEntity.ok().body(new
+                GenericResponse<>(
+                "00",
+                "Books fetched successfully",
+                iBook.getAll(),
                 new Date())
         );
     }
